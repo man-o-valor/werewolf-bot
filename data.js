@@ -213,7 +213,7 @@ const roles = [
 const turnOrder = [
     `test`,
     `wolfmain`,
-    `minion`
+    `minion`,
     `mason`,
     `joker`,
     `seer`,
