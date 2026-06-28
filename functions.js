@@ -227,7 +227,7 @@ async function executeEvent(event, interaction, gameSession) {
 	const players = allAssumedCardsMatching(gameSession, false);
 	const centerCards = allAssumedCardsMatching(gameSession, true);
 	const villagers = allAssumedCardsMatching(gameSession, false, 0);
-	const wolves = allAssumedCardsMatching(gameSession, false, 1);
+	const wolves = allAssumedCardsMatching(gameSession, false, 1).filter((p) => p.role.id !== 13);
 	const tanners = allAssumedCardsMatching(gameSession, false, 2);
 
 	switch (event) {
@@ -554,7 +554,7 @@ async function executeEvent(event, interaction, gameSession) {
 				await sayTo(
 					minions,
 					`You wake up to see who the ${nameplate(teams[1], true)} are...`,
-					`... the ${nameplate(teams[1], true)} are ` + joinInEnglish(wolfPlayers.map((item) => nameplate(item.name))) + ".",
+					`... the ${wolfPlayers.length > 1 ? "" : "only "}${nameplate(teams[1], wolfPlayers.length > 1)} ${wolfPlayers.length > 1 ? "are" : "is"} ` + joinInEnglish(wolfPlayers.map((item) => nameplate(item.name))) + ".",
 				);
 			}
 			break;

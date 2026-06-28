@@ -277,7 +277,7 @@ module.exports = {
 
 			const preventInaction = interaction.fields.getCheckbox("prevent-inaction") || false;
 			const centerCardsCount = parseInt(interaction.fields.getTextInputValue("center-cards-count") || "3", 10);
-			const actionSeconds = parseInt(interaction.fields.getTextInputValue("action-seconds") || "10", 10);
+			const actionSeconds = parseInt(interaction.fields.getTextInputValue("action-seconds") || "15", 10);
 			const votingTime = parseInt(interaction.fields.getTextInputValue("voting-time") || "5", 10);
 
 			const gameSettings = {
