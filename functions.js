@@ -538,6 +538,26 @@ async function executeEvent(event, interaction, gameSession) {
 				);
 			}
 			break;
+        case "minion":
+			const minions = allAssumedCardsMatching(gameSession, false, undefined, 13);
+			if (minions.length === 0) break;
+
+			const wolfPlayers = gameSession.players.filter((p) => p.user?.id && p.role.team === 1 && p.role.id !== 13);
+
+			if (wolfPlayers.length === 0) {
+				await sayTo(
+					minions,
+					`You wake up to see who the ${nameplate(teams[1], true)} are...`,
+					`...but there are no ${nameplate(teams[1], true)} in play.`,
+				);
+			} else {
+				await sayTo(
+					minions,
+					`You wake up to see who the ${nameplate(teams[1], true)} are...`,
+					`... the ${nameplate(teams[1], true)} are ` + joinInEnglish(wolfPlayers.map((item) => nameplate(item.name))) + ".",
+				);
+			}
+			break;
 	}
 }
 
@@ -565,9 +585,32 @@ function getWinningVote(votes) {
 }
 
 function calculateWinners(players, killed) {
-	const killedTeam = killed && killed.role ? killed.role.team : null;
+	const actualWolvesInPlay = players.some((player) => player.user?.id && player.role.team === 1 && player.role.id !== 13);
 
-	const wolvesInPlay = players.some((player) => player.user?.id && player.role.team === 1);
+	let winningTeam = 0;
+
+	if (killed === undefined || killed === null) {
+		if (actualWolvesInPlay) {
+			winningTeam = 1;
+		} else {
+			winningTeam = 0;
+		}
+	} else {
+		const killedTeam = killed.role ? killed.role.team : null;
+		const killedId = killed.role ? killed.role.id : null;
+
+		if (killedTeam === 2) {
+			winningTeam = 2;
+		} else if (killedTeam === 0) {
+			winningTeam = 1;
+		} else if (killedTeam === 1) {
+			if (killedId === 13) {
+				winningTeam = actualWolvesInPlay ? 1 : 0;
+			} else {
+				winningTeam = 0;
+			}
+		}
+	}
 
 	const winners = [];
 	const losers = [];
@@ -578,38 +621,10 @@ function calculateWinners(players, killed) {
 			const playerMention = `<@${player.user.id}>`;
 			const playerDisplay = `${player.role.icon} ${playerMention}`;
 
-			if (killed === undefined || killed === null) {
-				if (wolvesInPlay) {
-					if (player.role.team === 1) {
-						winners.push(playerDisplay);
-					} else {
-						losers.push(playerDisplay);
-					}
-				} else {
-					if (player.role.team === 0) {
-						winners.push(playerDisplay);
-					} else {
-						losers.push(playerDisplay);
-					}
-				}
-			} else if (killedTeam === 2) {
-				if (player.role.team === 2) {
-					winners.push(playerDisplay);
-				} else {
-					losers.push(playerDisplay);
-				}
-			} else if (killedTeam === 0) {
-				if (player.role.team === 1) {
-					winners.push(playerDisplay);
-				} else {
-					losers.push(playerDisplay);
-				}
-			} else if (killedTeam === 1) {
-				if (player.role.team === 0) {
-					winners.push(playerDisplay);
-				} else {
-					losers.push(playerDisplay);
-				}
+			if (player.role.team === winningTeam) {
+				winners.push(playerDisplay);
+			} else {
+				losers.push(playerDisplay);
 			}
 		} else {
 			const centerDisplay = `${player.role.icon} **${player.name}**`;

@@ -125,7 +125,7 @@ const roles = [
         name: `Witch`,
         plural: `Witches`,
         aka: [`wi`],
-        icon: `🧙`,
+        icon: `🧙‍♀️`,
         actions: [`witchview`],
         team: 0,
         maxAllowed: 1,
@@ -165,7 +165,7 @@ const roles = [
         name: `Insomniac`,
         plural: `Insomniacs`,
         aka: [`i`],
-        icon: `🥱`,
+        icon: `🫩`,
         actions: [`insomniac`],
         team: 0,
         get desc() {
@@ -196,11 +196,24 @@ const roles = [
             return `The ${nameplate(roles[12], true)} know who all other ${nameplate(roles[12], true)} are.`;
         },
     },
+    {
+        id: 13,
+        name: `Minion`,
+        plural: `Minions`,
+        aka: [`mi`,`min`],
+        icon: `🐾`,
+        actions: [`minion`],
+        team: 1,
+        get desc() {
+            return `Knows who the Werewolves and other Minions are, but isn't known to the other Werewolves. Can be executed by the village, and werewolves still win.`;
+        },
+    },
 ];
 
 const turnOrder = [
     `test`,
     `wolfmain`,
+    `minion`
     `mason`,
     `joker`,
     `seer`,
