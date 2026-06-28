@@ -171,7 +171,7 @@ async function showSetupModal(interaction) {
 				.setCustomId("action-seconds")
 				.setLabel("Seconds per Action")
 				.setStyle(TextInputStyle.Short)
-				.setPlaceholder("10")
+				.setPlaceholder("15")
 				.setRequired(false),
 		),
 		new ActionRowBuilder().addComponents(
