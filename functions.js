@@ -636,7 +636,7 @@ function calculateWinners(players, killed) {
 	const losersList = losers.length > 0 ? losers.join("\n") : "None";
 	const centerList = centerCards.length > 0 ? centerCards.join("\n") : "None";
 
-	return `### Winners:\n||${winnersList}||\n### Losers:\n||${losersList}||\n### Middle Cards:\n||${centerList}||`;
+	return `### Winners:\n${winnersList}\n### Losers:\n${losersList}\n### Center Cards:\n${centerList}`;
 }
 
 async function playGame(interaction, gameSession) {
@@ -789,7 +789,7 @@ async function playGame(interaction, gameSession) {
 		.addSeparatorComponents(new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Small).setDivider(true))
 		.addTextDisplayComponents(
 			new TextDisplayBuilder().setContent(
-				`||${allAssumedCardsMatching(gameSession, false).map((player) => `<@${player.user.id}> `)}||\n\nThe card voted by the majority of other players will be executed, and thus determine the winners of the game. You may vote at any time during the voting window, and you may change or remove your vote after you have already voted.\n\nIn the case of a tie, no card is executed, but one or more teams may still win.`,
+				`${allAssumedCardsMatching(gameSession, false).map((player) => `<@${player.user.id}>`).join("")}\n\nThe card voted by the majority of other players will be executed, and thus determine the winners of the game. You may vote at any time during the voting window, and you may change or remove your vote after you have already voted.\n\nIn the case of a tie, no card is executed, but one or more teams may still win.`,
 			),
 		)
 		.addSeparatorComponents(new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Small).setDivider(true))
